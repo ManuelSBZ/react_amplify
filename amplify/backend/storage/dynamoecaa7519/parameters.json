@@ -1,0 +1,5 @@
+{
+    "tableName": "Todo",
+    "partitionKeyName": "id",
+    "partitionKeyType": "S"
+}

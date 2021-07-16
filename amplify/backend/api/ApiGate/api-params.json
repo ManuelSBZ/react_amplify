@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/task",
+      "lambdaFunction": "taskFunction",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/task"
+    }
+  ],
+  "resourceName": "ApiGate",
+  "apiName": "ApiGate",
+  "functionArns": [
+    {
+      "lambdaFunction": "taskFunction"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-reactamplify-dev-141901-authRole",
+    "unAuthRoleName": "amplify-reactamplify-dev-141901-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "taskFunction",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

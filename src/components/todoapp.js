@@ -3,12 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import todoService from '../services/todoService'
 import { totpQrcode } from '@aws-amplify/ui'
 import { useEffect } from 'react'
-
+import { Auth } from "aws-amplify"
 
 export const TodoApp = (props) => {
     /*Estado: ContentTsak es utilizado para almacenar en tiempo
        de cambio el valor del input del nombre de la tarea*/
     // fields for adding task
+    const [Username, setUsername] = useState("")
     const [Done, setDone] = useState(false)
     const [DescriptionTask, setDescriptionTask] = useState("")
     const [Responsible, setResponsible] = useState("")
@@ -40,6 +41,8 @@ export const TodoApp = (props) => {
     useEffect(async ()=>{
         const response = await todoService.getTasks()
         const result = response.data.Items
+        const user = await Auth.currentAuthenticatedUser()
+        setUsername(user.username)
         // const listTask = result.map(item => <td>{Id}</td><td>{Responsible}</td><td>{DescriptionTask}</td><td><input type="checkbox" id={"DONE" + Id} value={Task.filter} onChange={} /></td> <td><button id={"DELETE" + Id} className="btn btn-danger rounded-circle" onClick={(e) => deletetask(e)}>X</button></td>)
         setTasks([...result])
     },[])
@@ -82,6 +85,11 @@ export const TodoApp = (props) => {
         setTasks([...result])
     }
 
+    const signOut= async () => {
+        await Auth.signOut()
+        window.location.reload()
+    }
+
     return (
         <div>
             {/* se seta value a ContentTask para que se borre cuando
@@ -119,11 +127,17 @@ export const TodoApp = (props) => {
                                 contentTask continuamente */
                             onChange={doneTaskUpdated} />
                     </div>
-                    <button className="my-1  btn btn-primary"
+                    <button className="my-1 mx-4 btn btn-primary align-self-center"
                         onClick={CreateTask}
                     >
                         Submit
                     </button>
+                    <button className="my-1 mx-4 btn btn-primary align-self-center"
+                        onClick={signOut}
+                    >
+                        Sign Out
+                    </button>
+                    <div className="my-1 mx-4 btn btn-primary align-self-center">{Username}</div>
                 </div>
             </div>
             <div className="container-fluid">
